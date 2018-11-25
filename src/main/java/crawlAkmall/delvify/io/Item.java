@@ -1,4 +1,4 @@
-package com.crawlAkmall.delvify;
+package crawlAkmall.delvify.io;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,7 @@ public class Item {
     public String packageSize;
     public String materials;
     public String price;
+    public String description;
     public ArrayList<String> urlLinks;
 
     public Item(String itemTitle, String designer, String keyFeatures, String compatibility, String packageIncludes, String productDim, String netWeight, String packageSize, String materials, String price, ArrayList<String> urlLinks) {

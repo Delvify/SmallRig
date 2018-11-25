@@ -1,4 +1,4 @@
-package com.crawlAkmall.delvify;
+package crawlAkmall.delvify.io;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,7 +15,9 @@ public class ReiCrawler {
 
     public static void main(String[] args) throws Exception {
 
-        ArrayList<String> smallrigUrlList = SmallRigUrlReader();
+        String filePath = "SmallRigUrlList";
+        ArrayList<String> smallrigUrlList = Utilities.dataReader(filePath);
+            //SmallRigUrlReader();
         for (String urllink : smallrigUrlList)
             crawler(urllink);
     }
@@ -67,28 +69,24 @@ public class ReiCrawler {
         }
         obj.put("imageUrl", jsonArray);
 
-        writeToFile(obj);
+        String saveFileName = "newproduct.json";
+        Utilities.writeToFile(obj, saveFileName );
     }
 
-    private static void writeToFile(JSONObject obj) throws Exception {
-        FileWriter fileWriter = new FileWriter("newproduct.json", true);
-        fileWriter.write(obj.toJSONString() + "\n");
-        fileWriter.close();
-    }
 
-    private static ArrayList<String> SmallRigUrlReader() {
-        ArrayList<String> urlList = new ArrayList<String>();
-        String filePath = "SmallRigUrlList";
-        File file = new File(filePath);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = br.readLine()) != null){
-                urlList.add(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return urlList;
-    }
+//    private static ArrayList<String> SmallRigUrlReader() {
+//        ArrayList<String> urlList = new ArrayList<String>();
+//        String filePath = "SmallRigUrlList";
+//        File file = new File(filePath);
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(file));
+//            String line;
+//            while ((line = br.readLine()) != null){
+//                urlList.add(line);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return urlList;
+//    }
 }

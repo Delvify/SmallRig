@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/compiler.xml
+.idea/misc.xml
+.idea/workspace.xml
+akmallCrawler.iml
+pom.xml
+product.json
+src/test/
+target/
