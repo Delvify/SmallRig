@@ -22,7 +22,7 @@ public class ReiCrawler {
             crawler(urllink);
     }
 
-    private static void crawler(String urllink) throws Exception {
+    public static void crawler(String urllink) throws Exception {
 
         JSONObject obj = new JSONObject();
         Document document = Jsoup.connect(urllink)
@@ -42,7 +42,12 @@ public class ReiCrawler {
             }
             if (header.text().split(":").length > 2){
                 for (Element sub_desc : header.select("span")){
-                    obj.put(sub_desc.text().split(":")[0], sub_desc.text().split(":")[1]);
+                    try {
+                        obj.put(sub_desc.text().split(":")[0], sub_desc.text().split(":")[1]);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
 //                  System.out.println(sub_desc.text().split(":")[0]);
 //                  System.out.println(sub_desc.text().split(":")[1]);
                 }
@@ -69,24 +74,8 @@ public class ReiCrawler {
         }
         obj.put("imageUrl", jsonArray);
 
-        String saveFileName = "newproduct.json";
+        String saveFileName = "smallrignewproduct.json";
         Utilities.writeToFile(obj, saveFileName );
     }
 
-
-//    private static ArrayList<String> SmallRigUrlReader() {
-//        ArrayList<String> urlList = new ArrayList<String>();
-//        String filePath = "SmallRigUrlList";
-//        File file = new File(filePath);
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(file));
-//            String line;
-//            while ((line = br.readLine()) != null){
-//                urlList.add(line);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return urlList;
-//    }
 }
