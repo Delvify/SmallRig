@@ -4,7 +4,8 @@ import crawlAkmall.delvify.io.Utilities;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class TextPreprocess {
 
     public static void main(String[] args)  throws Exception{
-        String filePath = "C:\\Users\\jugs\\IdeaProjects\\akmallCrawler\\product.json";
+        String filePath = "C:\\Users\\jugs\\IdeaProjects\\akmallCrawler\\smallrignewproduct.json";
         ArrayList<String> jsonData = Utilities.dataReader(filePath);
 
         TextPreprocess textPreprocess = new TextPreprocess();
@@ -36,14 +37,18 @@ public class TextPreprocess {
             parseKeyFeatures(new_jsonObject, jsonObject);
             parseNetWeight(new_jsonObject, jsonObject);
 
-            new_jsonObject.put("Designer", jsonObject.get("Designer").toString().trim());
-            new_jsonObject.put("imageUrl", jsonObject.get("imageUrl").toString().trim());
-            new_jsonObject.put("Compatibility", jsonObject.get("Compatibility").toString().trim());
-            new_jsonObject.put("Material(s)", jsonObject.get("Material(s)").toString().trim());
-            new_jsonObject.put("item_price", jsonObject.get("item_price").toString().trim());
-            new_jsonObject.put("Product Dimensions", jsonObject.get("Product Dimensions").toString().trim());
-            new_jsonObject.put("Package Weight", jsonObject.get("Package Weight").toString().trim());
-            new_jsonObject.put("Package Includes", jsonObject.get("Package Includes").toString().trim());
+            try {
+                new_jsonObject.put("Designer", jsonObject.get("Designer").toString().trim());
+                new_jsonObject.put("imageUrl", jsonObject.get("imageUrl").toString().trim());
+                new_jsonObject.put("Compatibility", jsonObject.get("Compatibility").toString().trim());
+                new_jsonObject.put("Material(s)", jsonObject.get("Material(s)").toString().trim());
+                new_jsonObject.put("item_price", jsonObject.get("item_price").toString().trim());
+                new_jsonObject.put("Product Dimensions", jsonObject.get("Product Dimensions").toString().trim());
+                new_jsonObject.put("Package Weight", jsonObject.get("Package Weight").toString().trim());
+                new_jsonObject.put("Package Includes", jsonObject.get("Package Includes").toString().trim());
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
 
 
@@ -54,9 +59,9 @@ public class TextPreprocess {
 
     private void parseNetWeight(JSONObject new_jsonObject, JSONObject jsonObject) {
         if (jsonObject.get("Net Weight") != (null))
-            new_jsonObject.put("Net Weight", jsonObject.get("Net Weight"));
+            new_jsonObject.put("net_Weight", jsonObject.get("Net Weight"));
         else
-            new_jsonObject.put("Net Weight", jsonObject.get("Package Weight"));
+            new_jsonObject.put("net_Weight", jsonObject.get("Package Weight"));
     }
 
     private void parseKeyFeatures(JSONObject new_jsonObject, JSONObject jsonObject) {
@@ -84,12 +89,19 @@ public class TextPreprocess {
     }
 
     private void parseDescription(JSONObject new_jsonObject, JSONObject jsonObject) {
+
+//        String patternString = "[^a-zA-Z0-9]";
+//        Pattern pattern = Pattern.compile(patternString);
+
         if (jsonObject.get("description").toString().length() > 5 ){
-            String new_desc = jsonObject.get("description").toString().replace("[^a-zA-Z0-9]", "");
+//            Matcher matcher = pattern.matcher(jsonObject.get("description").toString());
+            System.out.println();
+            String new_desc = jsonObject.get("description").toString().replaceAll("[^a-zA-Z0-9]", " ");
             new_jsonObject.put("description", new_desc);
         }
         else if (jsonObject.get("description").toString().length() < 5){
-            new_jsonObject.put("description", jsonObject.get("item_title").toString().trim());
+            String new_desc = jsonObject.get("item_title").toString().trim();
+            new_jsonObject.put("description", new_desc);
         }
     }
 

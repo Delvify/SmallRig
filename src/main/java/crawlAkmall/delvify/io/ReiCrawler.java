@@ -37,22 +37,17 @@ public class ReiCrawler {
         for (Element header : desc_element){
             if (header.text().split(":").length == 2 ){
                 obj.put(header.text().split(":")[0], header.text().split(":")[1]);
-//                System.out.println(header.text().split(":")[0]);
-//                System.out.println(header.text().split(":")[1]);
             }
-            if (header.text().split(":").length > 2){
+            else if (header.text().split(":").length > 2){
                 for (Element sub_desc : header.select("span")){
                     try {
                         obj.put(sub_desc.text().split(":")[0], sub_desc.text().split(":")[1]);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
-//                  System.out.println(sub_desc.text().split(":")[0]);
-//                  System.out.println(sub_desc.text().split(":")[1]);
                 }
             }
-            if (header.text().split(":").length < 2){
+            else if (header.text().length() > 5){
                 description.append(" ").append(header.text().trim());
             }
             obj.put("description",description.toString());
